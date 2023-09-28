@@ -1,27 +1,19 @@
 {
-    "name": "employee-tracker",
+    "name": "main",
     "version": "1.0.0",
-    "description": "A command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL.",
     "main": "server.js",
     "scripts": {
-        "test": "jest",
-        "start": "node server.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/csmith0414/employee-tracker.git"
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node server.js"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/csmith0414/employee-tracker/issues"
-    },
-    "homepage": "https://github.com/csmith0414/employee-tracker#readme",
+    "description": "",
     "dependencies": {
-        "console.table": "^0.10.0",
-        "dotenv": "^8.2.0",
-        "inquirer": "^8.2.4",
-        "mysql2": "^2.1.0"
+      "express": "^4.17.1",
+      "jshint": "^2.12.0",
+      "inquirer": "^8.2.4",
+      "mysql2": "^2.2.5"
     }
-}
+  }
