@@ -1,13 +1,6 @@
-const express = require('express');
-// Import and require mysql2
 const mysql = require('mysql2');
-
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+const inquirer = require('inquirer');
+const { printTable } = require('console-table-printer')
 
 const db = mysql.createConnection(
     {
@@ -18,10 +11,11 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the employee_db database.`)
 );
+const connection = db;
 
 db.connect(err => {
     if (err) throw err;
-    console.log('connected as id ' + connection.threadId);
+    console.log('connected as id ' + db.threadId);
     afterConnection();
 });
 
@@ -85,6 +79,20 @@ const promptUser = () => {
         });
 };
 
+// Show Departments
+showDepartments = () => {
+    console.log('Showing all departments...\n');
+
+    const sql = `SELECT *
+                FROM department`;
+
+    connection.query(sql, (err, rows) => {
+        if (err) throw err;
+        printTable(rows);
+        promptUser();
+    })
+};
+
 // Show all roles 
 showRoles = () => {
     console.log('Showing all roles...\n');
@@ -93,9 +101,9 @@ showRoles = () => {
                  FROM role
                  INNER JOIN department ON role.department_id = department.id`;
 
-    connection.promise().query(sql, (err, rows) => {
+    connection.query(sql, (err, rows) => {
         if (err) throw err;
-        console.table(rows);
+        printTable(rows);
         promptUser();
     })
 };
@@ -115,9 +123,9 @@ showEmployees = () => {
                         LEFT JOIN department ON role.department_id = department.id
                         LEFT JOIN employee manager ON employee.manager_id = manager.id`;
 
-    connection.promise().query(sql, (err, rows) => {
+    connection.query(sql, (err, rows) => {
         if (err) throw err;
-        console.table(rows);
+        printTable(rows);
         promptUser();
     });
 };
@@ -140,14 +148,15 @@ addDepartment = () => {
         }
     ])
         .then(answer => {
-            const sql = `INSERT INTO department (name)
-                    VALUES (?)`;
-            connection.query(sql, answer.addDept, (err, result) => {
+            const sql = 'INSERT INTO department (name) VALUES (?)';
+                    console.log(answer.addDept)
+            const statement = connection.query(sql, answer.addDept, (err, result) => {
                 if (err) throw err;
                 console.log('Added ' + answer.addDept + " to departments!");
 
                 showDepartments();
             });
+            console.log(statement.sql);
         });
 };
 
@@ -172,11 +181,11 @@ addRole = () => {
             name: 'salary',
             message: "What is the salary of this role?",
             validate: addSalary => {
-                if (isNAN(addSalary)) {
-                    return true;
-                } else {
+                if (isNaN(addSalary)) {
                     console.log('Please enter a salary');
                     return false;
+                } else {
+                    return true;
                 }
             }
         }
@@ -186,7 +195,7 @@ addRole = () => {
 
             const roleSql = `SELECT name, id FROM department`;
 
-            connection.promise().query(roleSql, (err, data) => {
+            connection.query(roleSql, (err, data) => {
                 if (err) throw err;
 
                 const dept = data.map(({ name, id }) => ({ name: name, value: id }));
@@ -252,7 +261,7 @@ addEmployee = () => {
 
             const roleSql = `SELECT role.id, role.title FROM role`;
 
-            connection.promise().query(roleSql, (err, data) => {
+            connection.query(roleSql, (err, data) => {
                 if (err) throw err;
 
                 const roles = data.map(({ id, title }) => ({ name: title, value: id }));
@@ -271,7 +280,7 @@ addEmployee = () => {
 
                         const managerSql = `SELECT * FROM employee`;
 
-                        connection.promise().query(managerSql, (err, data) => {
+                        connection.query(managerSql, (err, data) => {
                             if (err) throw err;
 
                             const managers = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
@@ -309,7 +318,7 @@ addEmployee = () => {
 updateEmployee = () => {
     const employeeSql = `SELECT * FROM employee`;
 
-    connection.promise().query(employeeSql, (err, data) => {
+    connection.query(employeeSql, (err, data) => {
         if (err) throw err;
 
         const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
@@ -329,7 +338,7 @@ updateEmployee = () => {
 
                 const roleSql = `SELECT * FROM role`;
 
-                connection.promise().query(roleSql, (err, data) => {
+                connection.query(roleSql, (err, data) => {
                     if (err) throw err;
 
                     const roles = data.map(({ id, title }) => ({ name: title, value: id }));

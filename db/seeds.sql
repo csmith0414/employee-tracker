@@ -15,11 +15,14 @@ VALUES
 ('HR Rep', 65000, 1),
 ('Sales Rep', 50000, 5);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
+INSERT INTO employee (first_name, last_name, role_id)
 VALUES
-('Chad', 'Smith', 1, 2),
-('Bob', 'Jackson', 2, null),
-('Chelsee', 'Cesareo', 5, null),
-('Chris', 'Johnson', 6, 5),
-('Tyler', 'Hanson', 3, null),
-('John', 'Doe', 4, null);
+('Chad', 'Smith', 1),
+('Bob', 'Jackson', 2),
+('Chelsee', 'Cesareo', 5),
+('Chris', 'Johnson', 6),
+('Tyler', 'Hanson', 3),
+('John', 'Doe', 4);
+
+UPDATE employee SET manager_id = 2 WHERE id = 1; 
+UPDATE employee SET manager_id = 3 WHERE id = 6; 
