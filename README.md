@@ -22,9 +22,8 @@ THEN I am prompted to enter the employee’s first name, last name, role, and ma
 WHEN I choose to update an employee role
 THEN I am prompted to select an employee to update and their new role and this information is updated in the database
 
-![Employee Tracker Demo](./images/Screenshot.png)
+Link to example video: [Employee Tracker Example Video](https://drive.google.com/file/d/149LaZEkFXIELRBlvMfGKQOPOLzTz5O6i/view)
 
-- Link to working URL: [Employee Tracker](https://csmith0414.github.io/work-day-scheduler/)
 
 ## Usage
 
