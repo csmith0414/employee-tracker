@@ -17,7 +17,7 @@ CREATE TABLE role (
     FOREIGN KEY (department_id)
     REFERENCES department(id)
     
-)
+);
 
 CREATE TABLE employee (
     id INT AUTO_INCREMENT,
@@ -30,4 +30,4 @@ CREATE TABLE employee (
     REFERENCES role(id),
     FOREIGN KEY (manager_id)
     REFERENCES employee(id)
-)
+);
